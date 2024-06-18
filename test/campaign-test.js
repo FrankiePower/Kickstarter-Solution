@@ -5,8 +5,6 @@ const web3 = new Web3(ganache.provider());
 
 const compiledFactory = require("../ethereum/build/CampaignFactory.json");
 const compiledCampaign = require("../ethereum/build/Campaign.json");
-const { validateHeaderName } = require("http");
-
 let accounts;
 let factory;
 let campaignAddress;
