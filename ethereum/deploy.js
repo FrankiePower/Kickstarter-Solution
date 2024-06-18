@@ -8,6 +8,7 @@ const provider = new HDWalletProvider(
   "https://sepolia.infura.io/v3/32149ccf1f49493e9050605abb679cfe"
   // remember to change this to your own endpoint!
 );
+
 const web3 = new Web3(provider);
 
 const deploy = async () => {
@@ -24,4 +25,5 @@ const deploy = async () => {
   console.log("Contract deployed to", result.options.address);
   provider.engine.stop();
 };
+
 deploy();
