@@ -1,15 +1,10 @@
 import React, { Component } from "react";
-import { Card, Grid, GridColumn, Button, GridRow } from "semantic-ui-react";
-import Layout from "../../components/layout";
+import { Card, Grid, Button } from "semantic-ui-react";
+import Layout from "../../components/Layout";
 import Campaign from "../../ethereum/campaign";
 import web3 from "../../ethereum/web3";
-import ContributeForm from "../../components/contribute";
+import ContributeForm from "../../components/ContributeForm";
 import { Link } from "../../routes";
-
-/* BigInt.prototype.toJSON = function () {
-  const int = Number.parseInt(this.toString());
-  return int ?? this.toString();
-}; */
 
 class CampaignShow extends Component {
   static async getInitialProps(props) {
@@ -21,78 +16,79 @@ class CampaignShow extends Component {
       address: props.query.address,
       minimumContribution: summary[0],
       balance: summary[1],
-      requestCount: summary[2],
+      requestsCount: summary[2],
       approversCount: summary[3],
       manager: summary[4],
     };
   }
+
   renderCards() {
     const {
       balance,
       manager,
       minimumContribution,
-      requestCount,
+      requestsCount,
       approversCount,
     } = this.props;
 
     const items = [
       {
-        header: manager.toString(),
+        header: manager,
         meta: "Address of Manager",
         description:
           "The manager created this campaign and can create requests to withdraw money",
         style: { overflowWrap: "break-word" },
       },
       {
-        header: minimumContribution.toString(),
-        meta: "Minimum Contribution(wei)",
+        header: minimumContribution,
+        meta: "Minimum Contribution (wei)",
         description:
-          "You must contribute this minimum wei to become an approver",
+          "You must contribute at least this much wei to become an approver",
       },
       {
-        header: requestCount.toString(),
+        header: requestsCount,
         meta: "Number of Requests",
         description:
           "A request tries to withdraw money from the contract. Requests must be approved by approvers",
       },
-
       {
-        header: approversCount.toString(),
+        header: approversCount,
         meta: "Number of Approvers",
         description:
           "Number of people who have already donated to this campaign",
       },
       {
         header: web3.utils.fromWei(balance, "ether"),
-        meta: "Campaign Balance(ether)",
-        description: "The balance is how much money this campaign has left",
+        meta: "Campaign Balance (ether)",
+        description:
+          "The balance is how much money this campaign has left to spend.",
       },
     ];
+
     return <Card.Group items={items} />;
   }
 
   render() {
     return (
       <Layout>
-        <h3>Campaign Details</h3>
+        <h3>Campaign Show</h3>
         <Grid>
-          <GridRow>
-            {" "}
-            <GridColumn width={10}>{this.renderCards()}</GridColumn>
-            <GridColumn width={6}>
+          <Grid.Row>
+            <Grid.Column width={10}>{this.renderCards()}</Grid.Column>
+            <Grid.Column width={6}>
               <ContributeForm address={this.props.address} />
-            </GridColumn>
-          </GridRow>
-          <GridRow>
-            <GridColumn>
-              {" "}
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row>
+            <Grid.Column>
               <Link route={`/campaigns/${this.props.address}/requests`}>
                 <a>
                   <Button primary>View Requests</Button>
                 </a>
               </Link>
-            </GridColumn>
-          </GridRow>
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       </Layout>
     );

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Form, Button, Input, Message } from "semantic-ui-react";
-import "semantic-ui-css/semantic.min.css";
-import Layout from "../../components/layout";
+import Layout from "../../components/Layout";
 import factory from "../../ethereum/factory";
 import web3 from "../../ethereum/web3";
 import { Router } from "../../routes";
@@ -15,12 +14,10 @@ class CampaignNew extends Component {
 
   onSubmit = async (event) => {
     event.preventDefault();
-
     this.setState({ loading: true, errorMessage: "" });
 
     try {
       const accounts = await web3.eth.getAccounts();
-
       await factory.methods
         .createCampaign(this.state.minimumContribution)
         .send({
@@ -37,10 +34,10 @@ class CampaignNew extends Component {
   render() {
     return (
       <Layout>
-        <h3>Create a Campaign</h3>
+        <h3>Create Campaign</h3>
         <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
           <Form.Field>
-            <label htmlFor="input">Minimum Contribution</label>
+            <label>Minimum Contribution</label>
             <Input
               label="wei"
               labelPosition="right"
@@ -51,7 +48,7 @@ class CampaignNew extends Component {
             />
           </Form.Field>
           <Message error header="Oops!" content={this.state.errorMessage} />
-          <Button primary loading={this.state.loading}>
+          <Button loading={this.state.loading} primary>
             Create!
           </Button>
         </Form>
